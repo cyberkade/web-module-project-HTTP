@@ -4,7 +4,7 @@ import { Link, useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 const Movie = (props) => {
-    const { addToFavorites, deleteMovie } = props;
+    const { addToFavorites } = props;
 
     const [movie, setMovie] = useState('');
 
@@ -21,13 +21,13 @@ const Movie = (props) => {
             })
     }, [id]);
 
-    const handleClick = () => {
-        axios.delete(`http://localhost:5000/api/movies/${id}`)
-        .then(res => {
-            deleteMovie(res.data)
-            push('/movies')
-        })
-        .catch(err => console.log(err))
+    const handleDelete = () => {
+            push(`/confirm/${id}`)
+    }
+
+    const handleAdd = () => {
+        addToFavorites(movie);
+        push('/movies')
     }
 
     return(<div className="modal-page col">
@@ -59,9 +59,9 @@ const Movie = (props) => {
                         </section>
                         
                         <section>
-                            <span className="m-2 btn btn-dark">Favorite</span>
+                            <span onClick={handleAdd} className="m-2 btn btn-dark">Favorite</span>
                             <Link to={`/movies/edit/${movie.id}`} className="m-2 btn btn-success">Edit</Link>
-                            <span className="delete"><input onClick={handleClick} type="button" className="m-2 btn btn-danger" value="Delete"/></span>
+                            <span className="delete"><input onClick={handleDelete} type="button" className="m-2 btn btn-danger" value="Delete"/></span>
                         </section>
                     </div>
                 </div>

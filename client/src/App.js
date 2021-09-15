@@ -11,6 +11,7 @@ import FavoriteMovieList from './components/FavoriteMovieList';
 
 import axios from 'axios';
 import AddMovieForm from "./components/AddMovieForm";
+import DeleteMovieModal from "./components/DeleteMovieModal";
 
 const App = (props) => {
   const [movies, setMovies] = useState([]);
@@ -30,8 +31,11 @@ const App = (props) => {
     setMovies(movies.filter(movie => movie.id !== id))
   }
 
-  const addToFavorites = (movie) => {
-    
+  const addToFavorites = (newMovie) => {
+    const favorite = movies.find((movie) => movie.title === newMovie.title)
+    if(favorite.title === 'The Lord of the Rings: The Fellowship of the Ring' || favorite.title === 'The Godfather' || favorite.title === 'Tombstone'){
+      setFavoriteMovies([...favoriteMovies, favorite])
+    } 
   }
 
   return (
@@ -46,24 +50,28 @@ const App = (props) => {
           <FavoriteMovieList favoriteMovies={favoriteMovies}/>
         
           <Switch>
-            <Route path="/movies/edit/:id">
-              <EditMovieForm setMovies={setMovies}/>
-            </Route>
-
-            <Route path="/movies/:id">
-              <Movie deleteMovie={deleteMovie} />
-            </Route>
-
-            <Route path="/addmovie">
+            <Route path="/movie/add">
               <AddMovieForm setMovies={setMovies} />
             </Route>
 
+            <Route path="/movies/edit/:id">
+              <EditMovieForm setMovies={setMovies} />
+            </Route>
+
+            <Route path="/movies/:id">
+              <Movie addToFavorites={addToFavorites} />
+            </Route>
+
+            <Route path="/confirm/:id">
+              <DeleteMovieModal deleteMovie={deleteMovie} />
+            </Route>
+
             <Route path="/movies">
-              <MovieList movies={movies}/>
+              <MovieList movies={movies} />
             </Route>
 
             <Route path="/">
-              <Redirect to="/movies"/>
+              <Redirect to="/movies" />
             </Route>
           </Switch>
         </div>

@@ -37,7 +37,7 @@ const EditMovieForm = (props) => {
 		.then(res => {
 			console.log(res)
 			props.setMovies(res.data);
-			push(`/api/movies/${id}`);
+			push(`/movies/${id}`);
 		})
 		.catch(err => console.log(err.response))
 	}
