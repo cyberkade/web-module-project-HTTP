@@ -17,7 +17,6 @@ const AddMovieForm = (props) => {
 
 	const { title, director, genre, metascore, description } = newMovie;
 	
-	const { id } = useParams();
 
 	const handleChange = (e) => {
         setNewMovie({
@@ -26,18 +25,15 @@ const AddMovieForm = (props) => {
         });
     }
 
-	const postMessage = (movie) => {
-		axios.post(`http://localhost:5000/api/movies`, newMovie)
+    const handleSubmit = (e) => {
+		e.preventDefault();
+        axios.post(`http://localhost:5000/api/movies`, newMovie)
 		.then(res => {
 			console.log(res)
 			props.setMovies(res.data);
 			push(`/movies`);
 		})
 		.catch(err => console.log(err.response))
-	}
-
-    const handleSubmit = (e) => {
-		e.preventDefault();
 	}
 	
 
