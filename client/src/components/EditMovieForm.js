@@ -14,7 +14,17 @@ const EditMovieForm = (props) => {
 		metascore: 0,
 		description: ""
 	});
+
+	const { title, director, genre, metascore, description } = movie;
 	
+	const { id } = useParams();
+
+	useEffect(() => {
+		axios.get(`http://localhost:5000/api/movies/${id}`)
+		.then(res => setMovie(res.data))
+		.catch(err => console.log(err))
+	},[])
+
 	const handleChange = (e) => {
         setMovie({
             ...movie,
@@ -22,11 +32,22 @@ const EditMovieForm = (props) => {
         });
     }
 
+	const putMessage = (movie) => {
+		axios.put(`http://localhost:5000/api/movies/${id}`, movie)
+		.then(res => {
+			console.log(res)
+			props.setMovies(res.data);
+			push(`/movies/${id}`);
+		})
+		.catch(err => console.log(err.response))
+	}
+
     const handleSubmit = (e) => {
 		e.preventDefault();
+		// console.log(movie);
+		putMessage(movie);
 	}
 	
-	const { title, director, genre, metascore, description } = movie;
 
     return (
 	<div className="col">
